@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowResume - AI Resume Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.5;
+        color: #1a1a1a;
+        background: #ffffff;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a1a1a;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: #666;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        color: #1a1a1a;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 160px 0 120px;
+        text-align: center;
+        background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    }
+
+    .hero h1 {
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 24px;
+        color: #1a1a1a;
+    }
+
+    .hero p {
+        font-size: 20px;
+        color: #666;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-button {
+        background: #1a1a1a;
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .cta-button:hover {
+        background: #333;
+        transform: translateY(-1px);
+    }
+
+    .pricing-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #f0f9ff;
+        color: #0369a1;
+        padding: 8px 16px;
+        border-radius: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 24px;
+    }
+
+    /* Features Section */
+    .features {
+        padding: 120px 0;
+        background: #ffffff;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .section-header h2 {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+    }
+
+    .section-header p {
+        font-size: 18px;
+        color: #666;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 40px;
+    }
+
+    .feature-card {
+        padding: 0;
+        text-align: left;
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: #f8fafc;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+    }
+
+    .feature-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    /* Pricing Section */
+    .pricing {
+        padding: 120px 0;
+        background: #fafafa;
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .pricing-card {
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 32px;
+        position: relative;
+        transition: all 0.2s ease;
+    }
+
+    .pricing-card:hover {
+        border-color: #1a1a1a;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .pricing-card.popular {
+        border-color: #1a1a1a;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .popular-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1a1a1a;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 24px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .plan-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+
+    .plan-price {
+        font-size: 48px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 24px;
+    }
+
+    .plan-features {
+        list-style: none;
+        margin-bottom: 32px;
+    }
+
+    .plan-features li {
+        padding: 8px 0;
+        color: #666;
+        position: relative;
+        padding-left: 24px;
+    }
+
+    .plan-features li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #22c55e;
+        font-weight: 600;
+    }
+
+    .plan-button {
+        width: 100%;
+        background: #1a1a1a;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .plan-button:hover {
+        background: #333;
+    }
+
+    .plan-button.secondary {
+        background: transparent;
+        color: #1a1a1a;
+        border: 1px solid #e5e5e5;
+    }
+
+    .plan-button.secondary:hover {
+        background: #f8fafc;
+    }
+
+    /* Form Section */
+    .form-section {
+        padding: 120px 0;
+        background: white;
+        display: none;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 48px;
+    }
+
+    .step-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #e5e5e5;
+        margin: 0 8px;
+        transition: all 0.2s ease;
+    }
+
+    .step-dot.active {
+        background: #1a1a1a;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.2s ease;
+        background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #1a1a1a;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 48px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background: #1a1a1a;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #333;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: #666;
+        border: 1px solid #e5e5e5;
+    }
+
+    .btn-secondary:hover {
+        background: #f8fafc;
+        color: #1a1a1a;
+    }
+
+    /* Testimonials */
+    .testimonials {
+        padding: 120px 0;
+        background: white;
+    }
+
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 80px;
+    }
+
+    .testimonial {
+        padding: 0;
+    }
+
+    .testimonial-content {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #1a1a1a;
+        margin-bottom: 24px;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .author-avatar {
+        width: 48px;
+        height: 48px;
+        background: #f0f9ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #0369a1;
+    }
+
+    .author-info h4 {
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+    }
+
+    .author-info p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        .hero {
+            padding: 120px 0 80px;
+        }
+
+        .features,
+        .pricing,
+        .testimonials {
+            padding: 80px 0;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">FlowResume</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+            </ul>
+        </nav>
+    </header>
+
+```
+<main>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Build your perfect resume with AI</h1>
+            <p>Professional, ATS-optimized resumes created in minutes. No design skills needed. Just answer a few questions and get hired.</p>
+            <button class="cta-button" onclick="showOrderForm()">Create Resume - $29</button>
+            <div class="pricing-badge">
+                <span>⚡</span>
+                Launch week: 50% off regular price
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything you need to get hired</h2>
+                <p>Professional resumes that pass ATS systems and impress hiring managers</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Content</h3>
+                    <p>Our AI analyzes your experience and writes compelling bullet points that highlight your achievements and get results.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Ready in Minutes</h3>
+                    <p>Complete our simple form and get your professional resume instantly. No waiting, no back-and-forth emails.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>ATS Optimized</h3>
+                    <p>Formatted to pass applicant tracking systems with the right keywords and structure to get your resume seen.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Multiple Formats</h3>
+                    <p>Download as PDF, Word doc, or plain text. Optimized for online applications and email submissions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Easy Updates</h3>
+                    <p>Keep your resume current with our simple editing tools. Update and download new versions anytime.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3>Industry Templates</h3>
+                    <p>Choose from templates designed for tech, finance, marketing, healthcare, and 15+ other industries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, affordable pricing</h2>
+                <p>One-time purchase. No subscriptions. No hidden fees.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Basic Resume</div>
+                    <div class="plan-price">$19</div>
+                    <ul class="plan-features">
+                        <li>AI-written resume</li>
+                        <li>ATS optimization</li>
+                        <li>PDF download</li>
+                        <li>1 professional template</li>
+                        <li>Basic support</li>
+                    </ul>
+                    <button class="plan-button secondary" onclick="selectPackage('basic')">Get Started</button>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-name">Complete Package</div>
+                    <div class="plan-price">$29</div>
+                    <ul class="plan-features">
+                        <li>Everything in Basic</li>
+                        <li>Cover letter template</li>
+                        <li>5 professional templates</li>
+                        <li>Word & PDF formats</li>
+                        <li>LinkedIn optimization tips</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="plan-button" onclick="selectPackage('complete')">Get Started</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-name">Career Bundle</div>
+                    <div class="plan-price">$49</div>
+                    <ul class="plan-features">
+                        <li>Everything in Complete</li>
+                        <li>3 custom cover letters</li>
+                        <li>LinkedIn profile rewrite</li>
+                        <li>Interview preparation guide</li>
+                        <li>Salary negotiation tips</li>
+                        <li>6 months of updates</li>
+                    </ul>
+                    <button class="plan-button secondary" onclick="selectPackage('career')">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Loved by job seekers everywhere</h2>
+                <p>Join thousands who've landed their dream jobs</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Got my first interview in weeks after using FlowResume. The AI really knew how to showcase my skills better than I could."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <h4>Sarah Miller</h4>
+                            <p>Marketing Coordinator</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Simple, fast, and professional. Worth every penny to not spend hours formatting and rewriting my resume."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <h4>James Davis</h4>
+                            <p>Software Developer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "As someone changing careers, FlowResume helped me position my experience perfectly. Landed 3 interviews in my first week."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RL</div>
+                        <div class="author-info">
+                            <h4>Rachel Lee</h4>
+                            <p>UX Designer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form -->
+    <section class="form-section" id="order-form">
+        <div class="container">
+            <div class="form-container">
+                <div class="section-header">
+                    <h2>Let's build your resume</h2>
+                    <p>Answer a few questions and we'll create your professional resume</p>
+                </div>
+
+                <div class="step-indicator">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+
+                <form id="resumeForm">
+                    <!-- Step 1: Basic Info -->
+                    <div class="form-step active" id="step1">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" name="location" placeholder="City, State" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="targetRole">Target Job Title</label>
+                            <input type="text" id="targetRole" name="targetRole" placeholder="e.g., Marketing Manager" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Experience -->
+                    <div class="form-step" id="step2">
+                        <div class="form-group">
+                            <label for="experience">Work Experience</label>
+                            <textarea id="experience" name="experience" placeholder="List your recent jobs with key achievements:&#10;&#10;Marketing Manager at ABC Corp (2020-2023)&#10;• Increased lead generation by 40%&#10;• Managed $200K marketing budget&#10;• Led team of 5 specialists" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="skills">Key Skills</label>
+                            <textarea id="skills" name="skills" placeholder="List your relevant skills separated by commas:&#10;&#10;Project Management, Google Analytics, Adobe Creative Suite, Social Media Marketing, Data Analysis" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="education">Education</label>
+                            <input type="text" id="education" name="education" placeholder="e.g., BS Marketing, University of XYZ (2019)" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Final Details -->
+                    <div class="form-step" id="step3">
+                        <div class="form-group">
+                            <label for="industry">Industry</label>
+                            <select id="industry" name="industry" required>
+                                <option value="">Select your industry</option>
+                                <option value="technology">Technology</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="finance">Finance</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                <option value="retail">Retail</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="packageType">Selected Package</label>
+                            <select id="packageType" name="packageType" required>
+                                <option value="basic">Basic Resume - $19</option>
+                                <option value="complete" selected>Complete Package - $29</option>
+                                <option value="career">Career Bundle - $49</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalInfo">Additional Information (Optional)</label>
+                            <textarea id="additionalInfo" name="additionalInfo" placeholder="Any other details you'd like us to include (certifications, languages, volunteer work, etc.)"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">Back</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">Continue</button>
+                        <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm()" style="display: none;">Create Resume</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function showOrderForm() {
+        document.getElementById('order-form').style.display = 'block';
+        document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function selectPackage(packageType) {
+        const packageSelect = document.getElementById('packageType');
+        packageSelect.value = packageType;
+        showOrderForm();
+    }
+
+    function updateStepIndicator() {
+        const dots = document.querySelectorAll('.step-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index < currentStep);
+        });
+    }
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+        
+        // Show current step
+        document.getElementById(`step${step}`).classList.add('active');
+        
+        // Update navigation
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        prevBtn.style.display = step > 1 ? 'block' : 'none';
+        nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+        submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+        
+        updateStepIndicator();
+    }
+
+    function nextStep() {
+        if (validateCurrentStep()) {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+    }
+
+    function previousStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function validateCurrentStep() {
+        const currentStepElement = document.getElementById(`step${currentStep}`);
+        const requiredFields = currentStepElement.querySelectorAll('[required]');
+        
+        for (let field of requiredFields) {
+            if (!field.value.trim()) {
+                field.focus();
+                field.style.borderColor = '#ef4444';
+                setTimeout(() => {
+                    field.style.borderColor = '#e5e5e5';
+                }, 2000);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function submitForm() {
+        if (validateCurrentStep()) {
+            // Collect form data
+            const formData = new FormData(document.getElementById('resumeForm'));
+            const data = Object.fromEntries(formData);
+            
+            // Here you would integrate with your payment processor (Stripe, PayPal, etc.)
+            alert('Thank you! Your resume will be ready shortly. Check your email for payment instructions and delivery details.');
+            
+            // You can send this data to your backend/automation system
+            console.log('Form submitted:', data);
+            
+            // Reset form and hide
+            document.getElementById('resumeForm').reset();
+            document.getElementById('order-form').style.display = 'none';
+            currentStep = 1;
+            showStep(1);
+        }
+    }
+
+    // Initialize
+    showStep(1);
+</script>
+```
+
+</body>
+</html>
